@@ -1,4 +1,3 @@
-using FastEndpoints;
 
 namespace DogApi
 {
@@ -11,10 +10,6 @@ namespace DogApi
             // Add services to the container.
 
             builder.Services.AddControllers();
-
-            // Register FastEndPoints service
-            builder.Services.AddFastEndpoints();
-
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -32,7 +27,6 @@ namespace DogApi
 
             app.UseAuthorization();
 
-            app.UseFastEndpoints();
 
             app.MapControllers();
 
