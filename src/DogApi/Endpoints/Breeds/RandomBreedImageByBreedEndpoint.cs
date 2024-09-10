@@ -13,8 +13,7 @@ namespace DogApi.Endpoints.Breeds
 
         public override void Configure()
         {
-            Verbs(Http.GET);
-            Routes("/api/dog/random-breed-image/{Breed}");
+            Get("/api/dog/random-breed-image/{Breed}");
             AllowAnonymous();
         }
 
