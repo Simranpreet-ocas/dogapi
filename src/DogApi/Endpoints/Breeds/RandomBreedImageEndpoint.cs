@@ -13,17 +13,23 @@ namespace DogApi.Endpoints.Breeds
 
         public override void Configure()
         {
-            Get("api/random-breed-image");
+            Get("dogs/random-breed-image");
             AllowAnonymous();
         }
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            var response = await _httpClient.GetAsync("https://dog.ceo/api/breeds/image/random", ct);
-            var content = await response.Content.ReadAsStringAsync(ct);
-            var result = JsonSerializer.Deserialize<RandomBreedImageResponse>(content);
+            // Fetch random breed image from Dog API
+            var response = await _httpClient.GetStringAsync("https://dog.ceo/api/breeds/image/random");
 
-            await SendAsync(result, cancellation: ct);
+            var dogApiResponse = JsonSerializer.Deserialize<RandomBreedImageResponse>(response);
+            if (dogApiResponse == null || dogApiResponse.Message == null)
+            {
+                throw new Exception("Failed to fetch random breed image from Dog API.");
+            }
+
+            // Send the random image as a response
+            await SendAsync(dogApiResponse);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace DogApi.Endpoints.Breeds
 {
-    public class RandomBreedImageByBreedEndpoint : Endpoint<RandomBreedImageByBreedRequest, RandomBreedImageResponse>
+    public class RandomBreedImageByBreedEndpoint : Endpoint<RandomBreedImageByBreedRequest, RandomBreedImageByBreedResponse>
     {
         private readonly HttpClient _httpClient;
 
@@ -13,20 +13,40 @@ namespace DogApi.Endpoints.Breeds
 
         public override void Configure()
         {
-            Get("/api/dog/random-breed-image/{Breed}");
+            Get("/dogs/random-breed-image/{breed}");
             AllowAnonymous();
         }
 
         public override async Task HandleAsync(RandomBreedImageByBreedRequest req, CancellationToken ct)
         {
-            // Call the Dog API to get a random image for the specified breed
-            var response = await _httpClient.GetStringAsync($"https://dog.ceo/api/breed/{req.Breed}/images/random");
+            // Fetch the random images by breed
+            var response = await _httpClient.GetStringAsync($"https://dog.ceo/api/breed/{req.Breed}/images/random/{req.Count}");
 
-            // Parse the response
-            var dogApiResponse = JsonSerializer.Deserialize<RandomBreedImageResponse>(response);
+            var dogApiResponse = JsonSerializer.Deserialize<RandomBreedImageByBreedResponse>(response);
+            if (dogApiResponse == null || dogApiResponse.Message == null)
+            {
+                throw new Exception($"Failed to fetch random images for breed: {req.Breed}.");
+            }
 
-            // Return the image URL
-            await SendAsync(dogApiResponse);
+            // Optional filtering logic based on the filter value
+            var filteredImages = dogApiResponse.Message;
+            if (!string.IsNullOrEmpty(req.Filter))
+            {
+                filteredImages = filteredImages.Where(img => img.Contains(req.Filter)).ToList();
+            }
+
+            // Paging logic
+            var paginatedImages = filteredImages
+                .Skip((req.Page - 1) * req.PageSize)
+                .Take(req.PageSize)
+                .ToList();
+
+            // Return the filtered and paginated list of images
+            await SendAsync(new RandomBreedImageByBreedResponse
+            {
+                Status = dogApiResponse.Status,
+                Message = paginatedImages
+            });
         }
     }
 }
