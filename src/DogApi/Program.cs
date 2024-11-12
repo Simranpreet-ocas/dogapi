@@ -1,3 +1,4 @@
+using FastEndpoints.Swagger;
 
 namespace DogApi
 {
@@ -8,25 +9,31 @@ namespace DogApi
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+
+            // Register HttpClient for API calls
+            builder.Services.AddHttpClient();
+
+            // Register FastEndpoints
+            builder.Services.AddFastEndpoints();
+
+            builder.Services.SwaggerDocument();
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerGen();
+                app.UseSwaggerUi();
             }
 
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
+            // Use FastEndpoints middleware
+            app.UseFastEndpoints();
 
             app.MapControllers();
 
