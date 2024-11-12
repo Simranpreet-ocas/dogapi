@@ -1,4 +1,4 @@
-﻿using DogApi.Models.Breeds;
+﻿using DogApi.Endpoints.Breeds.Models;
 
 namespace DogApi.Endpoints.Breeds
 {

@@ -1,4 +1,4 @@
-﻿namespace DogApi.Models.Breeds
+﻿namespace DogApi.Endpoints.Breeds.Models
 {
     public class ListAllBreedsResponse
     {

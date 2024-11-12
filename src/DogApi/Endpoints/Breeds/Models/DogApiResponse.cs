@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace DogApi.Models.Breeds
+namespace DogApi.Endpoints.Breeds.Models
 {
     public class DogApiResponse
     {
