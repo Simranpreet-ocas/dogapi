@@ -14,7 +14,7 @@ namespace DogApi.Endpoints.Breeds
         public override void Configure()
         {
             Get("/dogs/breeds");
-            AllowAnonymous();
+            Policies("AdminOnly");
         }
 
         public override async Task HandleAsync(ListAllBreedsRequest req, CancellationToken ct)

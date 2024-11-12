@@ -14,7 +14,7 @@ namespace DogApi.Endpoints.Breeds
         public override void Configure()
         {
             Get("/dogs/random-breed-image/{breed}");
-            AllowAnonymous();
+            Policies("Authenticated");
         }
 
         public override async Task HandleAsync(RandomBreedImageByBreedRequest req, CancellationToken ct)
