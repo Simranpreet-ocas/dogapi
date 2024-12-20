@@ -1,6 +1,8 @@
 ﻿using DogApi.Endpoints.Authentication.Config;
 using DogApi.Endpoints.Authentication.Services;
+using DogApi.Endpoints.Breeds.Validators;
 using FastEndpoints.Swagger;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -59,6 +61,14 @@ namespace DogApi
             });
 
             builder.Services.AddSingleton<UserStore>();
+
+            // Register FluentValidation validators
+            //builder.Services.AddValidatorsFromAssemblyContaining<ListAllBreedsRequestValidator>();
+
+            // Enable automatic validation and client-side adapters
+            builder.Services.AddFluentValidationAutoValidation()
+                            .AddFluentValidationClientsideAdapters();
+
 
             var app = builder.Build();
 
