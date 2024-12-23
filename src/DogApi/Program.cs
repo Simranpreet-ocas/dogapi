@@ -62,14 +62,6 @@ namespace DogApi
 
             builder.Services.AddSingleton<UserStore>();
 
-            // Register FluentValidation validators
-            //builder.Services.AddValidatorsFromAssemblyContaining<ListAllBreedsRequestValidator>();
-
-            // Enable automatic validation and client-side adapters
-            builder.Services.AddFluentValidationAutoValidation()
-                            .AddFluentValidationClientsideAdapters();
-
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
