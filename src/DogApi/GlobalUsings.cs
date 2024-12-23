@@ -8,3 +8,4 @@ global using Microsoft.Extensions.Logging;
 global using System.Text.Json;
 global using FastEndpoints;
 global using FluentValidation;
+global using Serilog;
