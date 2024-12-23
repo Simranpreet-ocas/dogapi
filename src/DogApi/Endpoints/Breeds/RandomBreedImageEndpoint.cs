@@ -1,4 +1,4 @@
-﻿using DogApi.Models.Breeds;
+﻿using DogApi.Endpoints.Breeds.Models;
 
 namespace DogApi.Endpoints.Breeds
 {
@@ -14,7 +14,7 @@ namespace DogApi.Endpoints.Breeds
         public override void Configure()
         {
             Get("dogs/random-breed-image");
-            AllowAnonymous();
+            Policies("Authenticated");
         }
 
         public override async Task HandleAsync(CancellationToken ct)

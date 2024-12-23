@@ -1,4 +1,5 @@
-﻿using DogApi.Models.Breeds;
+﻿using DogApi.Endpoints.Breeds.Models;
+using DogApi.Endpoints.Breeds.Validators;
 
 namespace DogApi.Endpoints.Breeds
 {
@@ -14,11 +15,15 @@ namespace DogApi.Endpoints.Breeds
         public override void Configure()
         {
             Get("/dogs/breeds");
-            AllowAnonymous();
+            Policies("AdminOnly");
+            Validator<ListAllBreedsRequestValidator>();
         }
 
         public override async Task HandleAsync(ListAllBreedsRequest req, CancellationToken ct)
         {
+            var page = req.Page ?? 1; // Default page = 1
+            var pageSize = req.PageSize ?? 10; // Default page size = 10
+
             // Fetch breeds from the Dog API
             var response = await _httpClient.GetStringAsync("https://dog.ceo/api/breeds/list/all");
             var result = JsonSerializer.Deserialize<DogApiResponse>(response);
@@ -28,8 +33,8 @@ namespace DogApi.Endpoints.Breeds
             // Apply search and pagination using the request model
             var filteredBreeds = allBreeds
                 .Where(b => string.IsNullOrEmpty(req.Search) || b.Contains(req.Search, StringComparison.OrdinalIgnoreCase))
-                .Skip((req.Page - 1) * req.PageSize)
-                .Take(req.PageSize)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToList();
 
             await SendAsync(new ListAllBreedsResponse
