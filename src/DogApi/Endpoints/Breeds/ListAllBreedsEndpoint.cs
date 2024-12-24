@@ -23,8 +23,6 @@ namespace DogApi.Endpoints.Breeds
 
         public override async Task HandleAsync(ListAllBreedsRequest req, CancellationToken ct)
         {
-            _logger.LogInformation("Fetching breeds from the Dog API");
-            Log.Information("Fetching breeds from the Dog API endpoint");
             var page = req.Page ?? 1; // Default page = 1
             var pageSize = req.PageSize ?? 10; // Default page size = 10
 
@@ -54,7 +52,7 @@ namespace DogApi.Endpoints.Breeds
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to fetch breeds from the Dog API");
+                _logger.LogError(ex, "Failed to fetch breeds from the Dog API: {Message}", ex.Message);
                 throw new Exception("Failed to fetch breeds from the Dog API");
             }
         }

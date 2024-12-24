@@ -15,16 +15,17 @@ namespace DogApi
         {
             var builder = WebApplication.CreateBuilder(args);
             // Configure Serilog
-            //Log.Logger = new LoggerConfiguration()
-            //    .ReadFrom.Configuration(builder.Configuration)
-            //    .Enrich.FromLogContext()
-            //    .WriteTo.Console()
-            //    .WriteTo.Seq(builder.Configuration["Serilog:WriteTo:1:Args:serverUrl"])
-            //    .CreateLogger();
-            builder.Host.UseSerilog((context, configuration) =>
-                configuration.WriteTo.Debug()
-                .MinimumLevel.Information()
-            );
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables()
+                .Build();
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger();
+
+            builder.Logging.ClearProviders(); // Clear default logging providers
+            builder.Host.UseSerilog(); // Register Serilog
 
             try
             {

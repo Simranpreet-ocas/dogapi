@@ -1,6 +1,5 @@
 ﻿using DogApi.Endpoints.Authentication.Models;
 using DogApi.Endpoints.Authentication.Utils;
-using Microsoft.AspNetCore.Identity;
 
 namespace DogApi.Endpoints.Authentication.Services
 {
