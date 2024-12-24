@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace DogApi.Endpoints.Breeds.Models
+﻿namespace DogApi.Endpoints.Breeds.Models
 {
     public class RandomBreedImageByBreedRequest
     {
