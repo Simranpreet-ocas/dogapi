@@ -1,12 +1,26 @@
 ﻿namespace DogApi.Endpoints.Breeds.Models
 {
+    /// <summary>
+    /// Represents a request to list all breeds.
+    /// </summary>
     public class ListAllBreedsRequest
     {
+        /// <summary>
+        /// Page number to retrieve
+        /// </summary>
         [QueryParam]
-        public int? Page { get; set; } = 1;  // Default page = 1
+        public int? Page { get; set; }
+
+        /// <summary>
+        /// Page size to limit the number of breeds returned
+        /// </summary>
         [QueryParam]
-        public int? PageSize { get; set; } = 10; // Default page size =
+        public int? PageSize { get; set; }
+
+        /// <summary>
+        /// Search term to further filter the breeds
+        /// </summary>
         [QueryParam]
-        public string? Search { get; set; }  // Search query
+        public string? Search { get; set; }
     }
 }

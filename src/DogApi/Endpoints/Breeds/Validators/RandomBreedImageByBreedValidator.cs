@@ -2,8 +2,14 @@
 
 namespace DogApi.Endpoints.Breeds.Validators
 {
+    /// <summary>
+    /// Validator for <see cref="RandomBreedImageByBreedRequest"/>.
+    /// </summary>
     public class RandomBreedImageByBreedValidator : AbstractValidator<RandomBreedImageByBreedRequest>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RandomBreedImageByBreedValidator"/> class and apply the necessary validation rules.
+        /// </summary>
         public RandomBreedImageByBreedValidator()
         {
             RuleFor(x => x.Breed)
