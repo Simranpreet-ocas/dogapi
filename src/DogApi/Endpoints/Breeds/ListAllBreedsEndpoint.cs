@@ -3,6 +3,9 @@ using DogApi.Endpoints.Breeds.Validators;
 
 namespace DogApi.Endpoints.Breeds
 {
+    /// <summary>
+    /// Endpoint to fetch all the breeds
+    /// </summary>
     public class ListAllBreedsEndpoint : Endpoint<ListAllBreedsRequest, ListAllBreedsResponse>
     {
         private readonly HttpClient _httpClient;
@@ -14,13 +17,45 @@ namespace DogApi.Endpoints.Breeds
             _logger = logger;
         }
 
+        /// <summary>
+        /// Configures the endpoint.
+        /// </summary>
         public override void Configure()
         {
             Get("/dogs/breeds");
             Policies("AdminOnly");
             Validator<ListAllBreedsRequestValidator>();
+
+            Summary(s =>
+            {
+                s.Summary = "Retrieve a list of all dog breeds";
+                s.Description = "This endpoint retrieves a comprehensive list of all dog breeds available in the Dog API. " +
+                                "You can optionally specify pagination parameters (page number and page size) and a search term to filter the breeds. " +
+                                "This endpoint is restricted to users with admin privileges.";
+                s.ExampleRequest = new ListAllBreedsRequest
+                {
+                    Page = 1,
+                    PageSize = 10,
+                    Search = "retriever"
+                };
+                s.ResponseExamples[200] = new ListAllBreedsResponse
+                {
+                    Breeds = new List<string> { "retriever", "bulldog" },
+                    TotalCount = 2
+                };
+                s.Responses[200] = "A list of dog breeds";
+                s.Responses[400] = "Validation failed";
+                s.Responses[401] = "Unauthorized access";
+                s.Responses[403] = "Forbidden access";
+            });
         }
 
+        /// <summary>
+        /// Handles the request to fetch all breeds.
+        /// </summary>
+        /// <param name="req">The request model.</param>
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
         public override async Task HandleAsync(ListAllBreedsRequest req, CancellationToken ct)
         {
             var page = req.Page ?? 1; // Default page = 1

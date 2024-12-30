@@ -3,10 +3,17 @@ using DogApi.Endpoints.Authentication.Utils;
 
 namespace DogApi.Endpoints.Authentication.Services
 {
+    /// <summary>
+    /// Represents the user store.
+    /// </summary>
     public class UserStore
     {
         private readonly List<User> _users;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserStore"/> class.
+        /// </summary>
+        /// <param name="env">The web host environment.</param>
         public UserStore(IWebHostEnvironment env)
         {
             var filepath = Path.Combine(env.ContentRootPath, "Data", "user.json");
@@ -22,6 +29,12 @@ namespace DogApi.Endpoints.Authentication.Services
             }
         }
 
+        /// <summary>
+        /// Validates the user credentials.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <param name="password">The password.</param>
+        /// <returns>The validated user, or null if validation fails.</returns>
         public User ValidateUser(string username, string password)
         {
             var user = _users.FirstOrDefault(u => u.Username == username);

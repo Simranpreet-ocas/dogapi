@@ -8,12 +8,22 @@ using System.Security.Claims;
 
 namespace DogApi.Endpoints.Authentication
 {
+
+    /// <summary>
+    /// Endpoint to generate a JWT token for authenticated users.
+    /// </summary>
     public class GenerateTokenEndpoint : Endpoint<AuthRequest, AuthResponse>
     {
         private readonly JwtSettings _jwtSettings;
         private readonly UserStore _userStore;
         private readonly ILogger<GenerateTokenEndpoint> _logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GenerateTokenEndpoint"/> class.
+        /// </summary>
+        /// <param name="jwtSettings">The JWT settings.</param>
+        /// <param name="userStore">The user store.</param>
+        /// <param name="logger">The logger.</param>
         public GenerateTokenEndpoint(IOptions<JwtSettings> jwtSettings, UserStore userStore, ILogger<GenerateTokenEndpoint> logger)
         {
             _jwtSettings = jwtSettings.Value;
@@ -21,12 +31,21 @@ namespace DogApi.Endpoints.Authentication
             _logger = logger;
         }
 
+        /// <summary>
+        /// Configures the endpoint.
+        /// </summary>
         public override void Configure()
         {
             Post("/auth/token");
             AllowAnonymous();
         }
 
+        /// <summary>
+        /// Handles the request to generate a JWT token.
+        /// </summary>
+        /// <param name="req">The authentication request model.</param>
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
         public override async Task HandleAsync(AuthRequest req, CancellationToken ct)
         {
             _logger.LogInformation("Token generation request received for user: {Username}", req.Username);

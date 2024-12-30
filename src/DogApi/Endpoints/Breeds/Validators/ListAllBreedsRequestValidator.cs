@@ -2,9 +2,15 @@
 
 namespace DogApi.Endpoints.Breeds.Validators
 {
-      public class ListAllBreedsRequestValidator : AbstractValidator<ListAllBreedsRequest>
+    /// <summary>
+    /// Validator for <see cref="ListAllBreedsRequest"/>.
+    /// </summary>
+    public class ListAllBreedsRequestValidator : AbstractValidator<ListAllBreedsRequest>
       {
-            public ListAllBreedsRequestValidator()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListAllBreedsRequestValidator"/> class and apply the necessary validation rules.
+        /// </summary>
+        public ListAllBreedsRequestValidator()
             {
                 RuleFor(x => x.Page)
                     .InclusiveBetween(1, 50)

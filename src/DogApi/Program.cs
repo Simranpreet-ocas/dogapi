@@ -4,6 +4,7 @@ using DogApi.Endpoints.Breeds.Validators;
 using FastEndpoints.Swagger;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
@@ -40,7 +41,18 @@ namespace DogApi
                 // Register FastEndpoints
                 builder.Services.AddFastEndpoints();
 
-                builder.Services.SwaggerDocument();
+                builder.Services.SwaggerDocument(config =>
+                {
+                    config.DocumentSettings = s =>
+                    {
+                        s.Title = "Dog API Microservice";
+                        s.Version = "v1";
+                        s.Description = "An API to manage dog breeds and related information. \n" +
+                                       "For more information, visit [Dog API](https://dog.ceo/dog-api/) and " +
+                                       "check out the [GitHub repository](https://github.com/dog-api) for source code.";
+                       s.DocumentName = "DogAPI V1";
+                    };
+                });
 
                 // Load JWT Settings
                 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
@@ -84,8 +96,8 @@ namespace DogApi
                 // Configure the HTTP request pipeline.
                 if (app.Environment.IsDevelopment())
                 {
-                    app.UseSwaggerGen();
-                    app.UseSwaggerUi();
+                    app.UseOpenApi();
+                    app.UseSwaggerUi(s => s.ConfigureDefaults());
                 }
 
                 app.UseHttpsRedirection();
@@ -94,7 +106,8 @@ namespace DogApi
                 app.UseAuthorization();
 
                 // Use FastEndpoints middleware
-                app.UseFastEndpoints();
+                app.UseFastEndpoints()
+                    .UseSwaggerGen();
 
                 app.MapControllers();
 

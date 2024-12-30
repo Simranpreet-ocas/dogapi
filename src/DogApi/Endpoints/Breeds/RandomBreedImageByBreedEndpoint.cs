@@ -3,24 +3,70 @@ using DogApi.Endpoints.Breeds.Validators;
 
 namespace DogApi.Endpoints.Breeds
 {
+    /// <summary>
+    /// Endpoint to fetch random images by breed.
+    /// </summary>
     public class RandomBreedImageByBreedEndpoint : Endpoint<RandomBreedImageByBreedRequest, RandomBreedImageByBreedResponse>
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<RandomBreedImageByBreedEndpoint> _logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RandomBreedImageByBreedEndpoint"/> class.
+        /// </summary>
+        /// <param name="httpClient">The HTTP client.</param>
+        /// <param name="logger">The logger.</param>
         public RandomBreedImageByBreedEndpoint(HttpClient httpClient, ILogger<RandomBreedImageByBreedEndpoint> logger)
         {
             _httpClient = httpClient;
             _logger = logger;
         }
 
+        /// <summary>
+        /// Configures the endpoint.
+        /// </summary>
         public override void Configure()
         {
             Get("/dogs/random-breed-image-by-breed");
             Policies("Authenticated");
             Validator<RandomBreedImageByBreedValidator>();
+
+            Summary(s =>
+            {
+                s.Summary = "Retrieve random images by breed";
+                s.Description = "This endpoint fetches a specified number of random images for a given dog breed from the Dog API. " +
+                                "You can optionally specify pagination parameters (page number and page size) and a filter term to narrow down the results. " +
+                                "The endpoint requires authentication.";
+                s.ExampleRequest = new RandomBreedImageByBreedRequest
+                {
+                    Breed = "retriever",
+                    Page = 1,
+                    PageSize = 10,
+                    Count = 5,
+                    Filter = "golden"
+                };
+                s.ResponseExamples[200] = new RandomBreedImageByBreedResponse
+                {
+                    Message = new List<string>
+                    {
+                        "https://images.dog.ceo/breeds/retriever-golden/n02099601_1003.jpg",
+                        "https://images.dog.ceo/breeds/retriever-golden/n02099601_1007.jpg"
+                    },
+                    Status = "success"
+                };
+                s.Responses[200] = "A list of random breed images";
+                s.Responses[400] = "Validation failed";
+                s.Responses[401] = "Unauthorized access";
+                s.Responses[403] = "Forbidden access";
+            });
         }
 
+        /// <summary>
+        /// Handles the request to fetch random images by breed.
+        /// </summary>
+        /// <param name="req">The request model.</param>
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
         public override async Task HandleAsync(RandomBreedImageByBreedRequest req, CancellationToken ct)
         {
             var page = req.Page ?? 1; // Default page = 1

@@ -4,6 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>C:\Users\sikaur\OneDrive - OCAS\PD\dogapi\bin\Debug\net8.0\DogApi.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
