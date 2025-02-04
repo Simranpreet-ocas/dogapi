@@ -1,6 +1,4 @@
-﻿using DogApi.Endpoints.Breeds.Models;
-
-namespace DogApi.Endpoints.Breeds
+﻿namespace DogApi.Endpoints.RandomBreedImage
 {
     /// <summary>
     /// Endpoint to fetch a random breed image.

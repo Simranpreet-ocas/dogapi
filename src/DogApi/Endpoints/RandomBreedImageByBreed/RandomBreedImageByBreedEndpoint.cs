@@ -1,7 +1,4 @@
-﻿using DogApi.Endpoints.Breeds.Models;
-using DogApi.Endpoints.Breeds.Validators;
-
-namespace DogApi.Endpoints.Breeds
+﻿namespace DogApi.Endpoints.RandomBreedImageByBreed
 {
     /// <summary>
     /// Endpoint to fetch random images by breed.
@@ -122,7 +119,7 @@ namespace DogApi.Endpoints.Breeds
             {
                 _logger.LogError(ex, "An error occurred while fetching random images for breed: {Breed}", req.Breed);
                 throw new Exception("Failed to fetch random images by breed from the Dog API");
-            }  
+            }
         }
     }
 }

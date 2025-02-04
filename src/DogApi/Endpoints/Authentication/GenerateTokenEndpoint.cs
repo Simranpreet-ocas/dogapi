@@ -1,7 +1,6 @@
 ﻿using DogApi.Endpoints.Authentication.Config;
 using DogApi.Endpoints.Authentication.Models;
 using DogApi.Endpoints.Authentication.Services;
-using DogApi.Endpoints.Breeds.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

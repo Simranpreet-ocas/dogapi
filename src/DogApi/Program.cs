@@ -1,17 +1,20 @@
 ﻿using DogApi.Endpoints.Authentication.Config;
 using DogApi.Endpoints.Authentication.Services;
-using DogApi.Endpoints.Breeds.Validators;
 using FastEndpoints.Swagger;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.IdentityModel.Tokens;
-using Serilog;
 
 namespace DogApi
 {
+    /// <summary>
+    /// The main entry point for the Dog API application.
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// The main method which configures and runs the Dog API application.
+        /// </summary>
+        /// <param name="args">The command-line arguments.</param>
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -31,7 +34,7 @@ namespace DogApi
             try
             {
                 Log.Information("Starting Dog API");
-               
+
                 // Add services to the container.
                 builder.Services.AddControllers();
 
@@ -50,7 +53,7 @@ namespace DogApi
                         s.Description = "An API to manage dog breeds and related information. \n" +
                                        "For more information, visit [Dog API](https://dog.ceo/dog-api/) and " +
                                        "check out the [GitHub repository](https://github.com/dog-api) for source code.";
-                       s.DocumentName = "DogAPI V1";
+                        s.DocumentName = "DogAPI V1";
                     };
                 });
 

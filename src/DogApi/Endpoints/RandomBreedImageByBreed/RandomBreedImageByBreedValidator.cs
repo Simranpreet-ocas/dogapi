@@ -1,6 +1,4 @@
-﻿using DogApi.Endpoints.Breeds.Models;
-
-namespace DogApi.Endpoints.Breeds.Validators
+﻿namespace DogApi.Endpoints.RandomBreedImageByBreed
 {
     /// <summary>
     /// Validator for <see cref="RandomBreedImageByBreedRequest"/>.

@@ -1,4 +1,4 @@
-﻿namespace DogApi.Endpoints.Breeds.Models
+﻿namespace DogApi.Endpoints.ListAllBreeds
 {
     /// <summary>
     /// Represents a request to list all breeds.

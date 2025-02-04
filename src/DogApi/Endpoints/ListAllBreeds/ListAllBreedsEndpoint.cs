@@ -1,7 +1,4 @@
-﻿using DogApi.Endpoints.Breeds.Models;
-using DogApi.Endpoints.Breeds.Validators;
-
-namespace DogApi.Endpoints.Breeds
+﻿namespace DogApi.Endpoints.ListAllBreeds
 {
     /// <summary>
     /// Endpoint to fetch all the breeds
