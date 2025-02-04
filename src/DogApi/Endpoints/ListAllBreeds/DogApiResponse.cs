@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace DogApi.Endpoints.Breeds.Models
+namespace DogApi.Endpoints.ListAllBreeds
 {
     /// <summary>
     /// Represents the response from the Dog API.

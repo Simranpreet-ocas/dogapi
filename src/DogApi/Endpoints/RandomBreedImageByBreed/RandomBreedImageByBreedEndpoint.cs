@@ -1,7 +1,4 @@
-﻿using DogApi.Endpoints.Breeds.Models;
-using DogApi.Endpoints.Breeds.Validators;
-
-namespace DogApi.Endpoints.Breeds
+﻿namespace DogApi.Endpoints.RandomBreedImageByBreed
 {
     /// <summary>
     /// Endpoint to fetch random images by breed.
@@ -10,16 +7,18 @@ namespace DogApi.Endpoints.Breeds
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<RandomBreedImageByBreedEndpoint> _logger;
-
+        private readonly IFlagsmithClient _flagsmithClient;
         /// <summary>
         /// Initializes a new instance of the <see cref="RandomBreedImageByBreedEndpoint"/> class.
         /// </summary>
         /// <param name="httpClient">The HTTP client.</param>
         /// <param name="logger">The logger.</param>
-        public RandomBreedImageByBreedEndpoint(HttpClient httpClient, ILogger<RandomBreedImageByBreedEndpoint> logger)
+        /// <param name="flagsmithClient">The Flagsmith client.</param>
+        public RandomBreedImageByBreedEndpoint(HttpClient httpClient, ILogger<RandomBreedImageByBreedEndpoint> logger, IFlagsmithClient flagsmithClient)
         {
             _httpClient = httpClient;
             _logger = logger;
+            _flagsmithClient = flagsmithClient;
         }
 
         /// <summary>
@@ -69,6 +68,14 @@ namespace DogApi.Endpoints.Breeds
         /// <returns>A task that represents the asynchronous operation.</returns>
         public override async Task HandleAsync(RandomBreedImageByBreedRequest req, CancellationToken ct)
         {
+            var isFeatureEnabled = (await _flagsmithClient.GetEnvironmentFlags()).IsFeatureEnabled("enable_random_breed_image_by_breed_endpoint");
+
+            if (!isFeatureEnabled.Result)
+            {
+                _logger.LogWarning("Feature flag 'enable_random_breed_image_by_breed_endpoint' is disabled");
+                await SendForbiddenAsync();
+                return;
+            }
             var page = req.Page ?? 1; // Default page = 1
             var pageSize = req.PageSize ?? 10; // Default page size = 10
 
@@ -112,7 +119,7 @@ namespace DogApi.Endpoints.Breeds
             {
                 _logger.LogError(ex, "An error occurred while fetching random images for breed: {Breed}", req.Breed);
                 throw new Exception("Failed to fetch random images by breed from the Dog API");
-            }  
+            }
         }
     }
 }

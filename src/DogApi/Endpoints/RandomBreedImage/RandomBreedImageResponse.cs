@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace DogApi.Endpoints.Breeds.Models
+namespace DogApi.Endpoints.RandomBreedImage
 {
     /// <summary>
     /// Represents the response containing a random breed image.

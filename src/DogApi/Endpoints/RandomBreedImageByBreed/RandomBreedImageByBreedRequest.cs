@@ -1,4 +1,4 @@
-﻿namespace DogApi.Endpoints.Breeds.Models
+﻿namespace DogApi.Endpoints.RandomBreedImageByBreed
 {
     /// <summary>
     /// Represents the request to fetch random images by breed.
@@ -32,7 +32,7 @@
         /// <summary>
         /// Filter (sub-breeds) to apply to the random images
         /// </summary>
-        [QueryParam]    
+        [QueryParam]
         public string? Filter { get; set; }
     }
 }

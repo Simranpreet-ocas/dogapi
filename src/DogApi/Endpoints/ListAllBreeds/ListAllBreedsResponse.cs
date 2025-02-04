@@ -1,4 +1,4 @@
-﻿namespace DogApi.Endpoints.Breeds.Models
+﻿namespace DogApi.Endpoints.ListAllBreeds
 {
     /// <summary>
     /// Represents the response containing a list of all breeds with a total count.

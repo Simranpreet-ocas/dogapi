@@ -1,7 +1,4 @@
-﻿using DogApi.Endpoints.Breeds.Models;
-using DogApi.Endpoints.Breeds.Validators;
-
-namespace DogApi.Endpoints.Breeds
+﻿namespace DogApi.Endpoints.ListAllBreeds
 {
     /// <summary>
     /// Endpoint to fetch all the breeds
@@ -10,11 +7,13 @@ namespace DogApi.Endpoints.Breeds
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<ListAllBreedsEndpoint> _logger;
+        private readonly IFlagsmithClient _flagsmithClient;
 
-        public ListAllBreedsEndpoint(HttpClient httpClient, ILogger<ListAllBreedsEndpoint> logger)
+        public ListAllBreedsEndpoint(HttpClient httpClient, ILogger<ListAllBreedsEndpoint> logger, IFlagsmithClient flagsmithClient)
         {
             _httpClient = httpClient;
             _logger = logger;
+            _flagsmithClient = flagsmithClient;
         }
 
         /// <summary>
@@ -58,6 +57,15 @@ namespace DogApi.Endpoints.Breeds
         /// <returns>A task that represents the asynchronous operation.</returns>
         public override async Task HandleAsync(ListAllBreedsRequest req, CancellationToken ct)
         {
+            var isFeatureEnabled = (await _flagsmithClient.GetEnvironmentFlags()).IsFeatureEnabled("enable_list_all_breeds_endpoint");
+
+            if (!isFeatureEnabled.Result)
+            {
+                _logger.LogWarning("Feature flag 'enable_list_all_breeds_endpoint' is disabled");
+                await SendForbiddenAsync();
+                return;
+            }
+
             var page = req.Page ?? 1; // Default page = 1
             var pageSize = req.PageSize ?? 10; // Default page size = 10
 
