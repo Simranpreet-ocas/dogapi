@@ -1,6 +1,7 @@
 ﻿using DogApi.Endpoints.Authentication.Config;
 using DogApi.Endpoints.Authentication.Models;
 using DogApi.Endpoints.Authentication.Services;
+using DogApi.Endpoints.Breeds.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -17,6 +18,7 @@ namespace DogApi.Endpoints.Authentication
         private readonly JwtSettings _jwtSettings;
         private readonly UserStore _userStore;
         private readonly ILogger<GenerateTokenEndpoint> _logger;
+        private readonly IFlagsmithClient _flagsmithClient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GenerateTokenEndpoint"/> class.
@@ -24,11 +26,13 @@ namespace DogApi.Endpoints.Authentication
         /// <param name="jwtSettings">The JWT settings.</param>
         /// <param name="userStore">The user store.</param>
         /// <param name="logger">The logger.</param>
-        public GenerateTokenEndpoint(IOptions<JwtSettings> jwtSettings, UserStore userStore, ILogger<GenerateTokenEndpoint> logger)
+        /// <param name="flagsmithClient">The Flagsmith client.</param>
+        public GenerateTokenEndpoint(IOptions<JwtSettings> jwtSettings, UserStore userStore, ILogger<GenerateTokenEndpoint> logger, IFlagsmithClient flagsmithClient)
         {
             _jwtSettings = jwtSettings.Value;
             _userStore = userStore;
             _logger = logger;
+            _flagsmithClient = flagsmithClient;
         }
 
         /// <summary>
@@ -38,6 +42,24 @@ namespace DogApi.Endpoints.Authentication
         {
             Post("/auth/token");
             AllowAnonymous();
+
+            Summary(s =>
+            {
+                s.Summary = "Generate a JWT token for authenticated users";
+                s.Description = "This endpoint generates a JWT token for authenticated users. " +
+                                "The endpoint requires a valid username and password. " +
+                                "If the feature flag 'enable_auth' is disabled, the endpoint will return a 403 Forbidden response.";
+                s.ResponseExamples[200] = new AuthResponse
+                {
+                    Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                    ExpirationMinutes = DateTime.UtcNow.AddMinutes(60)
+                };
+                s.Responses[200] = "JWT token generated successfully";
+                s.Responses[400] = "Validation failed";
+                s.Responses[401] = "Unauthorized access";
+                s.Responses[403] = "Forbidden access";
+                s.Responses[500] = "Internal server error";
+            });
         }
 
         /// <summary>
@@ -48,6 +70,15 @@ namespace DogApi.Endpoints.Authentication
         /// <returns>A task that represents the asynchronous operation.</returns>
         public override async Task HandleAsync(AuthRequest req, CancellationToken ct)
         {
+            var isFeatureEnabled = (await _flagsmithClient.GetEnvironmentFlags()).IsFeatureEnabled("enable_auth");
+
+            if (!isFeatureEnabled.Result)
+            {
+                _logger.LogWarning("Feature flag 'enable_auth' is disabled");
+                await SendForbiddenAsync();
+                return;
+            }
+
             _logger.LogInformation("Token generation request received for user: {Username}", req.Username);
 
             try

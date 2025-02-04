@@ -7,5 +7,6 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
 global using System.Text.Json;
 global using FastEndpoints;
+global using Flagsmith;
 global using FluentValidation;
 global using Serilog;

@@ -91,6 +91,14 @@ namespace DogApi
 
                 builder.Services.AddSingleton<UserStore>();
 
+                builder.Services.AddSingleton<IFlagsmithClient>(provider =>
+                {
+                    var configuration = provider.GetRequiredService<IConfiguration>();
+                    var apiKey = configuration["Flagsmith:EnvironmentApiKey"];
+
+                    return new FlagsmithClient(apiKey);
+                });
+
                 var app = builder.Build();
 
                 // Configure the HTTP request pipeline.
