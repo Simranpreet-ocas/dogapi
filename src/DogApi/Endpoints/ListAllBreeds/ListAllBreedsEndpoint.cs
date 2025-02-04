@@ -77,6 +77,12 @@
                 var response = await _httpClient.GetStringAsync("https://dog.ceo/api/breeds/list/all");
                 var result = JsonSerializer.Deserialize<DogApiResponse>(response);
 
+                if (result == null || result.Message == null)
+                {
+                    _logger.LogError("Dog API returned an invalid or empty response.");
+                    //await SendInternalServerErrorAsync("Dog API response was null or invalid.");
+                    return;
+                }
                 var allBreeds = result.Message.Keys.ToList();
 
                 // Apply search and pagination using the request model

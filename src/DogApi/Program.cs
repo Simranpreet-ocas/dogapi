@@ -1,5 +1,6 @@
 ﻿using DogApi.Endpoints.Authentication.Config;
 using DogApi.Endpoints.Authentication.Services;
+using DogApi.Endpoints.Authentication.Utils;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -92,7 +93,9 @@ namespace DogApi
                     });
                 });
 
+                // Register UserStore and IPasswordHasher
                 builder.Services.AddSingleton<UserStore>();
+                builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
                 builder.Services.AddSingleton<IFlagsmithClient>(provider =>
                 {

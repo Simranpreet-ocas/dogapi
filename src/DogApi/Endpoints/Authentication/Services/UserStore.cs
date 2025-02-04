@@ -1,5 +1,6 @@
 ﻿using DogApi.Endpoints.Authentication.Models;
 using DogApi.Endpoints.Authentication.Utils;
+using Microsoft.AspNetCore.Identity;
 
 namespace DogApi.Endpoints.Authentication.Services
 {
@@ -9,13 +10,14 @@ namespace DogApi.Endpoints.Authentication.Services
     public class UserStore
     {
         private readonly List<User> _users;
-
+        private readonly IPasswordHasher _passwordHasher;
         /// <summary>
         /// Initializes a new instance of the <see cref="UserStore"/> class.
         /// </summary>
         /// <param name="env">The web host environment.</param>
-        public UserStore(IWebHostEnvironment env)
+        public UserStore(IWebHostEnvironment env, IPasswordHasher passwordHasher)
         {
+            _passwordHasher = passwordHasher;
             var filepath = Path.Combine(env.ContentRootPath, "Data", "user.json");
 
             if (File.Exists(filepath))
@@ -41,7 +43,7 @@ namespace DogApi.Endpoints.Authentication.Services
             if (user == null)
                 return null;
 
-            if (PasswordHasher.VerifyPassword(password, user.PasswordHash, user.Salt))
+            if (_passwordHasher.VerifyPassword(password, user.PasswordHash, user.Salt))
             {
                 return user; // Return the authenticated user
             }
