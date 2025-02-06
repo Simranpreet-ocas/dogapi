@@ -2,6 +2,7 @@
 using DogApi.Endpoints.Authentication.Services;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.IdentityModel.Tokens;
 
 namespace DogApi
@@ -34,6 +35,10 @@ namespace DogApi
             try
             {
                 Log.Information("Starting Dog API");
+
+                builder.Services.AddDataProtection()
+                    .PersistKeysToFileSystem(new DirectoryInfo(@"/root/.aspnet/DataProtection-Keys"))
+                    .SetApplicationName("DogApi");
 
                 // Add services to the container.
                 builder.Services.AddControllers();
@@ -121,7 +126,7 @@ namespace DogApi
                     .UseSwaggerGen();
 
                 app.MapControllers();
-
+                
                 app.Run();
             }
             catch (Exception ex)
