@@ -1,0 +1,31 @@
+services:
+  dogapi:
+    image: ${DOCKER_REGISTRY-}dogapi
+    container_name: dogapi-container
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Docker"
+      ASPNETCORE_URLS: "http://+:5000;https://+:5001"
+      Serilog__WriteTo__0__Args__serverUrl: "http://seq:5341"
+      # Configure Data Protection keys storage
+      DOTNET_DataProtection__KeyPath: "/root/.aspnet/DataProtection-Keys"
+    ports:
+      - 5000:5000
+    build:
+      context: ./src/DogApi
+      dockerfile: Dockerfile
+    depends_on:
+      - seq
+    volumes:
+      - dogapi_keys:/root/.aspnet/DataProtection-Keys
+  seq: 
+    image: datalust/seq:latest
+    container_name: seq-container
+    environment:
+      ACCEPT_EULA: Y
+    ports: 
+      - 5341:80
+    volumes:
+      - seq_data:/data
+volumes:
+  seq_data:
+  dogapi_keys:
