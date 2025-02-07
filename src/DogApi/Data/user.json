@@ -1,30 +1,35 @@
 [
   {
     "Username": "Gio",
+    //"PlainPassword": "giopassword",
     "PasswordHash": "+WooqRMFUe+V7FCM6emI93pZHSJKZ8aCuP9IdmZ5cVg=",
     "Salt": "Un8WBiRF0qZsLz9YCfKH0A==",
     "Role": "User"
   },
   {
     "Username": "Akshay",
+    //"PlainPassword": "akshaypassword",
     "PasswordHash": "ZCZWRAI39dZPjqAMiuYm51HVppPFFmfLw59UTKXXGmg=",
     "Salt": "W65alKmxgaEC1tL+xT8TBA==",
     "Role": "User"
   },
   {
     "Username": "Vishal",
+    //"PlainPassword": "vishalpassword",
     "PasswordHash": "mq0edqqPiY5Xb5uactn8XmnXOI7MLoPSQpYXtLG+Pk0=",
     "Salt": "+q8kMFSb7j3r4qknJi0CTA==",
     "Role": "User"
   },
   {
     "Username": "Simran",
+    //"PlainPassword": "simranpassword",
     "PasswordHash": "B+mOWylPyIc6VJ0Q8kS4q+giQkGW6mhmiCn2l11Gyi8=",
     "Salt": "9nkKoSslbbeNrS1r9dp2YQ==",
     "Role": "User"
   },
   {
     "Username": "Kyle",
+    //"PlainPassword": "adminpassword",
     "PasswordHash": "HtFvu0lm8awI5ImnXpHAAK5zuLzvi7Nlz7qj2Wwmo94=",
     "Salt": "oGmiYPy+0UmqoeuBTF38Mg==",
     "Role": "Admin"
