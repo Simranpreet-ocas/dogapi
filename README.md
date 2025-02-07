@@ -68,6 +68,18 @@ The DogApiMicroservice is a robust and scalable microservice designed to interac
 6. **Authentication and authorization**
    - The user.json file has all the usernames and plain passwords, only user with admin role will be able to access **ListAllBreeds** Endpoint.
    - The **RandomBreedImageByBreed** enpoint is disabled as feature flag.
+  
+   ## User Credentials
+
+Below are the pre-configured users available in the system. You can use these credentials to test authentication and authorization.
+
+| Username  | Role  | Password         |
+|-----------|-------|-----------------|
+| Gio       | User  | giopassword     |
+| Akshay    | User  | akshaypassword  |
+| Vishal    | User  | vishalpassword  |
+| Simran    | User  | simranpassword  |
+| Kyle      | Admin | adminpassword   |
 
 
 ## Pending Work
