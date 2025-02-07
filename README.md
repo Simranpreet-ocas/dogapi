@@ -65,6 +65,9 @@ The DogApiMicroservice is a robust and scalable microservice designed to interac
      - **API Swagger UI**: [http://localhost:5000/swagger](http://localhost:5000/swagger)
      - **Seq Logging UI**: [http://localhost:5341](http://localhost:5341)
 
+6. **Authentication and authorization**
+   - The user.json file has all the usernames and plain passwords, only user with admin role will be able to access **ListAllBreeds** Endpoint.
+   - The **RandomBreedImageByBreed** enpoint is disabled as feature flag.
 
 
 ## Pending Work
