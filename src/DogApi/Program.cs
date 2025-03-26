@@ -57,7 +57,7 @@ namespace DogApi
                         s.Version = "v1";
                         s.Description = "An API to manage dog breeds and related information. \n" +
                                        "For more information, visit [Dog API](https://dog.ceo/dog-api/) and " +
-                                       "check out the [GitHub repository](https://github.com/dog-api) for source code.";
+                                       "check out the [GitHub repository](https://github.com/Simranpreet-ocas/dogapi) for source code.";
                         s.DocumentName = "DogAPI V1";
                     };
                 });
