@@ -41,6 +41,7 @@ jobs:
           push: true
           tags: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_APP_NAME }}:${{ github.sha }}
           file: ./src/DogApi/Dockerfile
+          context: ./src/DogApi
 
       - name: Azure Login
         uses: azure/login@v2
